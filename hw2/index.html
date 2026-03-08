@@ -28,11 +28,11 @@
 	<body>
 		<div class="container">
 		<h1>CS184/284A Spring 2025 Homework 2 Write-Up</h1>
-		<div style="text-align: center;">Names: </div>
+		<div style="text-align: center;">Names: Sofia valadez</div>
 
 		<br>
 
-		Link to webpage: (TODO) <a href="https://cs184.eecs.berkeley.edu/sp25">cs184.eecs.berkeley.edu/sp25</a>
+		Link to webpage: <a href="https://cs184.eecs.berkeley.edu/sp26/hw/hw2/">cs184.eecs.berkeley.edu/sp26/hw/hw2</a>
 
 		<br>
 		
@@ -48,69 +48,116 @@
 		-->
 
 		<h2>Overview</h2>
-		Give a high-level overview of what you implemented in this homework. Think about what you've built as a whole. Share your thoughts on what interesting things you've learned from completing the homework.
+		On this assignment, we used the de Casteljau algorithm to implement Bezier curves and surfaces.
+		We also used triangle meshes with loop subdivision and half-edge data structure.
 
 		<h2>Section I: Bezier Curves and Surfaces</h2>
 
-		<h3>Part 1: Bezier curves with 1D de Casteljau subdivision</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		<h3>Part 1: 
+		de Casteljau’s algorithm uses recursion to evaluate a point on a Bezier curve with linear interpolation.
+		Using a parameter t (that takes values from (0,1)), it interpolates between the given points to create new ones
+		until there is only one left. This algorithm was implemented in this homework by creating a function that did 'one step'
+		of the interpolation. It takes in a vector of given 'control' <i>n</i> points and returns a vector 
+		with the resulting interpolated <i>n - 1</i> points. This is called repeatedly until only
+		one point is returned
 
-		<p>Here is an example 2x2 gridlike structure using an HTML table. Each <b>tr</b> is a row and each <b>td</b> is a column in that row. You might find this useful for framing and showing your result images in an organized fashion.</p>
+		<p>different steps of the interpolation</p>
 		<div style="display: flex; flex-direction: column; align-items: center;">
 			<table style="width: 100%; text-align: center; border-collapse: collapse;">
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="pt1s1.png" alt = "screenshot with points on the screen"width="400px"/>
 				</td>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="p1s2.png" alt = "screenshot with points on the screen"width="400px"/>
+				</td>
+				<td style="text-align: center;">
+				  <img src="p1s3.png" alt = "screenshot with points on the screen"width="400px"/>
 				</td>
 			  </tr>
 			  <tr>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="p1s4.png" alt = "screenshot with points on the screen"width="400px"/>
 				</td>
 				<td style="text-align: center;">
-				  <img src="teapot.png" width="400px"/>
-				  <figcaption>Caption goes here.</figcaption>
+				  <img src="p1s5.png" alt = "screenshot with points on the screen"width="400px"/>
+				</td>
+				<td style="text-align: center;">
+				  <img src="p1s6.png" alt = "screenshot with points on the screen"width="400px"/>
 				</td>
 			  </tr>
 			</table>
 		</div>
 
+		<figure>
+			<img src="p1s7.png" alt="curve" width="400px"/>
+			<figcaption>bezier curve</figcaption>
+		</figure>
+
 		<h3>Part 2: Bezier surfaces with separable 1D de Casteljau</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		We can also use de Casteljau’s algorithm for Bezier surfaces, not just curves.
+		By doing so, we modify it so it now takes in 2 paramemters, <i>u, v</i>. Instead of just a vector
+		containing control points, this function takes in a matrix. Each row is treated as a 
+		Bezier curve and evaluated with <i>u</i>. The resulting 'column' of each 'row point'
+		is evaluated again as Bezier curves with <i>v</i> as the new parameter.
+		The final point is the the one on the Bezier surface.
+		<figure>
+			<img src="p2.png" alt="Teapot" width="400px"/>
+			<figcaption>teapot</figcaption>
+		</figure>
+		
 
 		<h2>Section II: Triangle Meshes and Half-Edge Data Structure</h2>
 
 		<h3>Part 3: Area-weighted vertex normals</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+		This section was implemented by iterating through the adjacent faces of vertices using 
+		halfedges. For each face, you compute 2 edge vectors from 3 vertices and use the cross
+		product get the face normal (whose magnitude is proportional to the triangle's area). 
+		All these face normals then get used to produce the unit vertex normal.
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="p3.png" alt="Teapot" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+				  <img src="p3s2.png" alt="Teapot" width="400px"/>
+				</td>
+			  </tr>
+
+			</table>
+		</div>
 
 		<h3>Part 4: Edge flip</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+
+		This section was implemented with the edge flip operation by first checking if the selected edge 
+		or its adjacent faces are on the boundary. If so, the function would return immediately.
+		If not, 6 halfedges involved in the adjacent triangles and their respective vertices, edges, 
+		and faces were collected. After that, to flip the edges, you reassinged the edges to face the other way
+		(or into the other triangle). 
+		<div style="display: flex; flex-direction: column; align-items: center;">
+			<table style="width: 100%; text-align: center; border-collapse: collapse;">
+			  <tr>
+				<td style="text-align: center;">
+				  <img src="p4s1.png" alt="Teapot" width="400px"/>
+				</td>
+				<td style="text-align: center;">
+				  <img src="p4s2.png" alt="Teapot" width="400px"/>
+				</td>
+			  </tr>
+
+			</table>
+		</div>
 
 		<h3>Part 5: Edge split</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 
-		<h3>Part 6: Loop subdivision for mesh upsampling</h3>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+		This section was implemented with edge split operations that checked if the given edge is on the boundary.
+		if either face in on a boundary, the function immidiately returns. If not, the relavent halfedges, vertices, edges, 
+		and faces were collected. Then, you create a new vertex in the middle of the orignal one by averaging its
+		vertices. Then, you create the necessary mesh elements to create 4 triangles in the space of the original 
+		2.
+		
 
-		<h2>(Optional) Section III: Potential Extra Credit - Art Competition: Model something Creative</h2>
-		Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-
-		<h2>Additional Notes (please remove)</h2>
-		<ul>
-			<li>You can also add code if you'd like as so: <code>code code code</code></li>
-			<li>If you'd like to add math equations, 
-				<ul>
-					<li>You can write inline equations like so: \( a^2 + b^2 = c^2 \)</li>
-					<li>You can write display equations like so: \[ a^2 + b^2 = c^2 \]</li>
-				</ul>
-			</li>
-		</ul>
-		</div>
 	</body>
 </html>
